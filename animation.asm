@@ -256,17 +256,22 @@ OnPaint:
     sub rax, startTick                      ; 经过的毫秒数
     
     xor edx, edx
-    mov rcx, 100
-    div rcx                                 ; rax = 秒数
+    mov rcx, 50
+    div rcx
     
     xor edx, edx
     mov rcx, WINDOW_SIZE
-    div rcx                                 ; rdx = 秒数 % 512
+    div rcx                                 ; rdx = 正方形边长
     
-    ; 如果余数为0，设为1（确保可见）
+    ; 如果余数为0，需要重绘一次客户区
     test edx, edx
     jnz SizeOk
-    mov edx, 1
+    ; 填充整个客户区 (清除背景)
+    mov rcx, [rbp-8h]     ; hdc
+    lea rdx, rcClient     ; 之前获取的客户区矩形
+    mov r8, [rbp-18h]     ; 背景画刷
+    call FillRect
+    
 SizeOk:
     mov [rbp-10h], edx                      ; squareSize
     
