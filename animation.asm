@@ -256,7 +256,7 @@ OnPaint:
     sub rax, startTick                      ; 经过的毫秒数
     
     xor edx, edx
-    mov rcx, 1000
+    mov rcx, 100
     div rcx                                 ; rax = 秒数
     
     xor edx, edx
